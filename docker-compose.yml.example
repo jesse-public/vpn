@@ -14,7 +14,7 @@ services:
       - TZ
       - WG_INTERFACE
     volumes:
-      - $PWD/root/etc/wireguard:/etc/wireguard
+      - $PWD/volumes/etc/wireguard:/etc/wireguard
     networks:
       - vpn
     ports:
