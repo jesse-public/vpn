@@ -7,6 +7,10 @@ RUN \
   apk upgrade --no-cache && \
   rm -rf /var/cache/apk/*
 
+COPY ./wg0.conf /etc/wireguard/wg0.conf
+
+RUN chmod 0600 /etc/wireguard/wg0.conf
+
 COPY ./start-wireguard.sh /start-wireguard.sh
 
 EXPOSE 51820/udp
