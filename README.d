@@ -3,3 +3,5 @@ Build the image:
 
 Run the container:
 ```docker-compose up -d```
+
+Adding clients:
