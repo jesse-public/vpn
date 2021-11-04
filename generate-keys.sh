@@ -11,6 +11,7 @@ BaseIP="10.7.0.";
 ClientIPSuffix=2;
 ServerIP=${BaseIP}1;
 
+sudo rm ./configs/client/*.conf
 sudo rm ./configs/*.conf
 rm -rf keys
 mkdir keys
@@ -51,7 +52,7 @@ AllowedIPs = ${ClientIP}/32
 EOL
 
   echo "Creating ${ClientName}.conf..."
-  cat > configs/${ClientName}.conf << EOL
+  cat > configs/client/${ClientName}.conf << EOL
 [Interface]
 Address = ${ClientIP}
 PrivateKey = $(cat keys/${ClientName}.privatekey)

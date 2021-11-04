@@ -4,4 +4,11 @@ Build the image:
 Run the container:
 ```docker-compose up -d```
 
-Adding clients:
+Regenerating keys:
+```./generate-keys.sh```
+
+Showing client configs:
+```./show-qr.sh configs/client/device.conf```
+
+Removing client configs:
+```rm configs/client/*.conf```

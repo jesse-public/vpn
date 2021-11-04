@@ -2,5 +2,4 @@
 docker-compose.yml
 *.conf
 keys
-configs/*
-!configs/*.example
+configs/*.conf
