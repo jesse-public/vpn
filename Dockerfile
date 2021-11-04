@@ -7,7 +7,7 @@ RUN \
   apk upgrade --no-cache && \
   rm -rf /var/cache/apk/*
 
-COPY ./wg0.conf /etc/wireguard/wg0.conf
+COPY ./configs/server.conf /etc/wireguard/wg0.conf
 
 RUN chmod 0600 /etc/wireguard/wg0.conf
 
