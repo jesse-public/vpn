@@ -5,10 +5,10 @@ Run the container:
 ```docker-compose up -d```
 
 Regenerating keys:
-```./generate-keys.sh```
+```./regenerate-keys.sh```
 
 Showing client configs:
-```./show-qr.sh configs/client/device.conf```
+```./qr-code.sh configs/client/device.conf```
 
 Removing client configs:
 ```rm configs/client/*.conf```

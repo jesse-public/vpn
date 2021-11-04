@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
-echo "WARNING: Run on secure machine and then transfer configs to server and peers!"
+read -r -p "WARNING: This will REMOVE all existing configs. Continue? [y/N] " response
+case "$response" in
+  [yY][eE][sS]|[yY])
+    ;;
+  *)
+    exit 0
+    ;;
+esac
 
 ServerEndpoint="domain.duckdns.org";
 DNS="9.9.9.9, 9.9.9.9";
@@ -64,7 +71,7 @@ PresharedKey = $(cat keys/${ClientName}.presharedkey)
 AllowedIPs = 0.0.0.0/0, ::/0
 Endpoint = ${ServerEndpoint}:${PORT}
 EOL
-  chmod 0600 configs/${ClientName}.conf
+  chmod 0600 configs/client/${ClientName}.conf
   ((ClientIPSuffix++));
 done
 

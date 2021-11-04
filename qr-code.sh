@@ -2,7 +2,7 @@
 
 if [ "$#" -ne 1 ]
 then
-  echo "Usage: ./show-qr configs/client/device.conf"
+  echo "Usage: ./qr-code.sh configs/client/device.conf"
   exit 1
 fi
 
