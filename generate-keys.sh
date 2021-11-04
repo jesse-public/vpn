@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
+
+echo "WARNING: Run on secure machine and then transfer configs to server and peers!"
+
 ServerEndpoint="domain.duckdns.org";
 DNS="9.9.9.9, 9.9.9.9";
 ClientNames=('mac' 'pc' 'linux' 'phone');
@@ -8,8 +11,9 @@ BaseIP="10.7.0.";
 ClientIPSuffix=2;
 ServerIP=${BaseIP}1;
 
-sudo rm ./keys/*
 sudo rm ./configs/*.conf
+rm -rf keys
+mkdir keys
 
 DeviceNames=("${ClientNames[@]}" "${ServerNames[@]}");
 
@@ -22,7 +26,6 @@ do
   wg genpsk > keys/${DeviceName}.presharedkey
 done
 
-# server.conf
 echo "Creating server.conf..."
 cat > configs/server.conf << EOL
 [Interface]
@@ -63,3 +66,5 @@ EOL
   chmod 0600 configs/${ClientName}.conf
   ((ClientIPSuffix++));
 done
+
+rm -rf keys
