@@ -1,7 +1,7 @@
 Prerequisites
 -------------
 
-`wg` for key generation. This can be done on any box using `regenerate-keys.sh`.
+`wg` for key generation
 
 
 Usage
