@@ -1,22 +1,30 @@
-version: "3"
-
-networks:
-  vpn:
+version: "2.1"
 
 services:
-  vpn:
-    image: vpn
-    container_name: vpn
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
     cap_add:
-      - NET_ADMIN # required for up link add
-      # - SYS_MODULE
+      - NET_ADMIN
+      # - SYS_MODULE #optional
+    # https://docs.linuxserver.io/images/docker-wireguard/#environment-variables-e
     environment:
+      - PUID=1000
+      - PGID=1000
       - TZ
-      - WG_INTERFACE
-    networks:
-      - vpn
+      - SERVERURL
+      - SERVERPORT
+      - PEERS
+      - PEERDNS
+      - INTERNAL_SUBNET
+      - ALLOWEDIPS
+      - PERSISTENTKEEPALIVE_PEERS
+      - LOG_CONFS=false
+    volumes:
+      - ./volumes/config:/config
+      # - /lib/modules:/lib/modules #optional
     ports:
       - 51820:51820/udp
     sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1
+      - net.ipv4.conf.all.src_valid_mark=1 # required for client mode
     restart: unless-stopped
