@@ -12,12 +12,12 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ
-      - SERVERURL
-      - SERVERPORT
-      - PEERS
-      - PEERDNS
-      - INTERNAL_SUBNET
-      - ALLOWEDIPS
+      - SERVERURL=wireguard.domain.com
+      - SERVERPORT=51820
+      - PEERS=peer1,peer2
+      - PEERDNS=auto
+      - INTERNAL_SUBNET=10.13.13.0
+      - ALLOWEDIPS=0.0.0.0/0
       - PERSISTENTKEEPALIVE_PEERS
       - LOG_CONFS=false
     volumes:
@@ -25,6 +25,6 @@ services:
       # - /lib/modules:/lib/modules #optional
     ports:
       - 51820:51820/udp
-    sysctls:
-      - net.ipv4.conf.all.src_valid_mark=1 # required for client mode
+    # sysctls:
+    #   - net.ipv4.conf.all.src_valid_mark=1 # required for client mode
     restart: unless-stopped
