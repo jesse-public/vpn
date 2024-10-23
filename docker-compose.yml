@@ -1,0 +1,55 @@
+services:
+  duckdns:
+    image: lscr.io/linuxserver/duckdns:latest
+    container_name: duckdns
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TOKEN=${DUCKDNS_TOKEN}
+      - SUBDOMAINS=${DUCKDNS_SUBDOMAIN}
+      - LOG_FILE=false
+      - TZ
+    # volume is only needed if using LOG_FILE=true
+    # volumes:
+    #   - ./volumes/duckdns/config:/config
+    restart: unless-stopped
+
+  wireguard:
+    image: lscr.io/linuxserver/wireguard:latest
+    container_name: wireguard
+    cap_add:
+      - NET_ADMIN
+      # - SYS_MODULE #optional
+    # https://docs.linuxserver.io/images/docker-wireguard/#environment-variables-e
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ
+      - SERVERURL=${DUCKDNS_SUBDOMAIN}.duckdns.org
+      - SERVERPORT
+      - PEERS
+      - PEERDNS
+      - INTERNAL_SUBNET
+      - ALLOWEDIPS=0.0.0.0/0
+      - PERSISTENTKEEPALIVE_PEERS
+      - LOG_CONFS=true
+    volumes:
+      - ./volumes/wireguard/config:/config
+      # - /lib/modules:/lib/modules #optional
+    ports:
+      - 51820:51820/udp
+    # sysctls:
+    #   - net.ipv4.conf.all.src_valid_mark=1 # required for client mode
+    restart: unless-stopped
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: wireguard duckdns
+    restart: unless-stopped
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - WATCHTOWER_INTERVAL=3600  # Check for updates every hour
+      - WATCHTOWER_RETENTION=2
