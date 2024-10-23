@@ -10,4 +10,6 @@ Note: On Rocky Linux 9 (and other RHEL), iptables is replaced by nftables. After
 
 Showing a peer QR code
 ---
-docker exec -it wireguard /app/show-peer userphone
+```
+docker exec -it wireguard /app/show-peer laptop
+```
