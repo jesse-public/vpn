@@ -51,5 +51,4 @@ services:
     restart: unless-stopped
     environment:
       - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_INTERVAL=3600  # Check for updates every hour
-      - WATCHTOWER_RETENTION=2
+      - WATCHTOWER_POLL_INTERVAL=3600  # Check for updates every hour
