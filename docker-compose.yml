@@ -34,21 +34,10 @@ services:
       - PERSISTENTKEEPALIVE_PEERS
       - LOG_CONFS=true
     volumes:
-      - ./volumes/wireguard/config:/config
+      - ./volumes/wireguard/config:/config:Z
       # - /lib/modules:/lib/modules #optional
     ports:
-      - 51820:51820/udp
+      - ${CLIENT_IP}:51820:51820/udp
     # sysctls:
     #   - net.ipv4.conf.all.src_valid_mark=1 # required for client mode
     restart: unless-stopped
-
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: wireguard duckdns
-    restart: unless-stopped
-    environment:
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_POLL_INTERVAL=3600  # Check for updates every hour
