@@ -1,17 +1,49 @@
+networks:
+  cfddns:
+    driver: bridge
+  duckdns:
+    driver: bridge
+  wireguard:
+    driver: bridge
+
+secrets:
+  cloudflare_api_token:
+    file: ./secrets/cloudflare_api_token
+  duckdns_token:
+    file: ./secrets/duckdns_token
+
 services:
+  cfddns:
+    image: favonia/cloudflare-ddns:latest
+    container_name: cfddns
+    cap_drop: [all]
+    read_only: true
+    security_opt: [no-new-privileges:true]
+    user: "1000:1000"
+    environment:
+      - CLOUDFLARE_API_TOKEN_FILE=/run/secrets/cloudflare_api_token
+      - DOMAINS
+      - IP6_PROVIDER=none
+    networks:
+      - cfddns
+    restart: unless-stopped
+
   duckdns:
     image: lscr.io/linuxserver/duckdns:latest
     container_name: duckdns
+    user: "1000:1000"
     environment:
       - PUID=1000
       - PGID=1000
-      - TOKEN=${DUCKDNS_TOKEN}
+      - FILE__TOKEN=/run/secrets/duckdns_token
       - SUBDOMAINS=${DUCKDNS_SUBDOMAIN}
       - LOG_FILE=false
       - TZ
     # volume is only needed if using LOG_FILE=true
     # volumes:
     #   - ./volumes/duckdns/config:/config
+    networks:
+      - duckdns
     restart: unless-stopped
 
   wireguard:
@@ -20,6 +52,7 @@ services:
     cap_add:
       - NET_ADMIN
       # - SYS_MODULE #optional
+    user: "1000:1000"
     # https://docs.linuxserver.io/images/docker-wireguard/#environment-variables-e
     environment:
       - PUID=1000
@@ -36,6 +69,8 @@ services:
     volumes:
       - ./volumes/wireguard/config:/config:Z
       # - /lib/modules:/lib/modules #optional
+    networks:
+      - wireguard
     ports:
       - ${CLIENT_IP}:51820:51820/udp
     # sysctls:
