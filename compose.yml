@@ -22,7 +22,7 @@ services:
     user: "1000:1000"
     environment:
       - CLOUDFLARE_API_TOKEN_FILE=/run/secrets/cloudflare_api_token
-      - DOMAINS
+      - DOMAINS=${DOMAIN}
       - IP6_PROVIDER=none
     secrets:
       - cloudflare_api_token
@@ -60,7 +60,8 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ
-      - SERVERURL=${DUCKDNS_SUBDOMAIN}.duckdns.org
+      # - SERVERURL=${DUCKDNS_SUBDOMAIN}.duckdns.org
+      - SERVERURL=${DOMAIN}
       - SERVERPORT
       - PEERS
       - PEERDNS
